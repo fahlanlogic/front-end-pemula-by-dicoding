@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Storage</title>
+  <style>
+    .contents {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid black;
+      padding: 15px;
+    }
+    
+    #generateButton {
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="contents" align="center">
+    <button id="incrementButton">Tambah nilai</button>
+    <button id="clear">Hapus storage</button>
+    <h3>Kamu sudah menekan tombol di atas sebanyak:</h3>
+    <h2 id="count">0</h2>
+  </div>
+
+<script>
+
+  // membuat storageKey
+  const sessionStorageKey = 'PRESS_FREQUENCY'
+
+  // mengecek apakah browser mendukung local storage
+  if (typeof (Storage) !== undefined) { // jika storage tidak undefined maka jalankan perintah berikut
+    if(sessionStorage.getItem(sessionStorageKey) === null) { // memanggil key storage -> mengecek kalau null atur nitalinya ke 0
+      sessionStorage.setItem(sessionStorageKey, 0) // atur key storage nya ke 0, untuk memulai perhitungannya dari 0
+    }
+
+    // waktunya menyimpan variable
+    const IncrementButton = document.querySelector('#incrementButton')
+    const clearButton = document.querySelector('#clear')
+    const countDisplay = document.querySelector('#count')
+
+    // beri nilai pada element id untuk ditampilkan sesuai nilai local storage melalui getItem key
+    countDisplay.innerText = sessionStorage.getItem(sessionStorageKey)
+
+    // memberi function click agar increment button bekerja
+    IncrementButton.addEventListener('click', function() {
+      // pertama-tama simpan key nya dalam variable agar mudah di increment
+      let count = sessionStorage.getItem(sessionStorageKey)
+      count++ // menambah nilai daripada key
+      sessionStorage.setItem(sessionStorageKey, count) // mengupdate sessionStorage sesuai key dan nilainya
+      countDisplay.innerText = sessionStorage.getItem(sessionStorageKey) // tampilkan di layar
+    })
+
+    // function menghapus storage
+    clearButton.addEventListener('click', function() {
+      sessionStorage.removeItem(sessionStorageKey) // menghapus storage dengan key
+      countDisplay.innerText = 0 // beri nilai 0 artinya menghapus untuk mengulang lagi dari nol 0
+    })
+  } else { // jalankan jika web tidak mendukung local storage
+    alert('Web browser anda belum mendukung web storage!')
+  }
+
+</script>
+</body>
+</html>
